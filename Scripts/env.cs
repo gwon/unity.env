@@ -23,19 +23,27 @@ namespace CandyCoded.env
 
         private static Dictionary<string, string> _variables;
 
-        public static Dictionary<string, string> variables => _variables ??= ParseEnvironmentFile();
+        public static Dictionary<string, string> variables => VARS();
 
         public static Dictionary<string, string> ParseEnvironmentFile(string contents)
         {
 
-            return contents.Trim().Split(Convert.ToChar(Environment.NewLine)).Where(l =>
-                    !string.IsNullOrWhiteSpace(l) && !l.StartsWith("#") &&
-                    l.IndexOf("=", StringComparison.Ordinal) != -1)
+            return contents.Trim().Split(new[] { Environment.NewLine }, StringSplitOptions.None).Where(l =>
+                     !string.IsNullOrWhiteSpace(l) && !l.StartsWith("#") &&
+                     l.IndexOf("=", StringComparison.Ordinal) != -1)
                 .ToDictionary(l => l.Substring(0, l.IndexOf("=", StringComparison.Ordinal)).Trim(),
                     l => l.Substring(l.IndexOf("=", StringComparison.Ordinal) + 1).Trim().Trim('"', '\''));
 
         }
 
+        static Dictionary<string, string> VARS()
+        {
+            if (_variables == null)
+            {
+                _variables = ParseEnvironmentFile();
+            }
+            return _variables;
+        }
         public static string SerializeEnvironmentDictionary(Dictionary<string, string> dictionary)
         {
 

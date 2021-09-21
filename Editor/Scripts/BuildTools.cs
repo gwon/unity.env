@@ -23,16 +23,17 @@ namespace CandyCoded.env.Editor
 
         }
 
-        public int callbackOrder { get; }
+        public int callbackOrder
+        {
+            get;
+        }
 
         public void OnPreprocessBuild(BuildReport report)
         {
 
             if (File.Exists(env.runtimeFilePath))
             {
-
                 throw new Exception($"{env.runtimeFilePath} already exists. Remove this file before continuing.");
-
             }
 
             if (!Directory.Exists(env.resourcesDirPath))
@@ -44,7 +45,7 @@ namespace CandyCoded.env.Editor
 
             }
 
-            FileUtil.CopyFileOrDirectory(env.editorFilePath, env.runtimeFilePath);
+            //FileUtil.CopyFileOrDirectory(env.editorFilePath, env.runtimeFilePath);
 
         }
 
